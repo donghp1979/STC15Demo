@@ -6,4 +6,14 @@
 
 void  delay_ms(unsigned char ms);
 
+void  Delay1us();
+
+void  Delay5us();
+
+
+
+void  Delay10us();
+
+void  Delay100us();
+
 #endif

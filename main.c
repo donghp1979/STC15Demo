@@ -1,6 +1,7 @@
 //#include "temp.h"
 #include "DS18B20.h"
 #include "uart.h"
+#include "delay.h"
 
 /*******************************************************************************
 * 实验名			   : 动态显示数码管实验
@@ -32,7 +33,8 @@ void main(void)
 {
 	unsigned char i;
 	int temp;
-	System_Init();
+	GPIO_Init();
+	Timer0_Init();
 	UART_Init();
 	EA = 1;
 	for(i=0;i<8;i++)
@@ -59,8 +61,8 @@ void main(void)
 		DisplayData[5]=DIG_CODE[0];
 		DisplayData[6]=DIG_CODE[0];
 		DisplayData[7]=DIG_CODE[0];
-		//DEBUG(("Temp: %0.2f\n",(float)temp/100));
-		Delay1ms(500);
+		PrintString1("hello\r\n");
+		delay_ms(255);
 	}
 }
 
@@ -70,7 +72,7 @@ void main(void)
 * 输入           : 无
 * 输出         	 : 无
 *******************************************************************************/
-void DigDisplay() interrupt 1 using 2
+void DigDisplay()
 {
 	static unsigned char Num = 0;
 	//unsigned char i;
@@ -101,14 +103,6 @@ void DigDisplay() interrupt 1 using 2
 		//GPIO_DIG=AUXR;
 		Num++;
 		if(Num>7) Num=0;
-	}
-}
-
-/* 串口1中断函数 */
-void Uart() interrupt 4 using 1 {
-	if(RI) {
-		RI=0;
-		P0=~P0;
 	}
 }
 

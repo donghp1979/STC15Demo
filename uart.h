@@ -2,6 +2,7 @@
 #define __INCLUDE_UART_H_
 
 #include <stdio.h>
+#include "USART.h"
 
 extern void UART_Init();
 extern bit Enable_DEBUG;

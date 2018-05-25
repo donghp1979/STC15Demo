@@ -117,7 +117,9 @@ u8 USART_Configuration(u8 UARTx, COMx_InitDefine *COMx)
 		if(COMx->UART_RxEnable == ENABLE)	S2CON |=  (1<<4);	//允许接收
 		else								S2CON &= ~(1<<4);	//禁止接收
 		P_SW2 = (P_SW2 & ~1) | (COMx->UART_P_SW & 0x01);	//切换IO
+		return 0;
 	}
+	return 1;
 }
 
 

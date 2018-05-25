@@ -10,10 +10,12 @@
 
 #include	"timer.h"
 
+extern void DigDisplay();
+
 /********************* Timer0中断函数************************/
 void timer0_int (void) interrupt TIMER0_VECTOR
 {
-
+	DigDisplay();
 }
 
 /********************* Timer1中断函数************************/

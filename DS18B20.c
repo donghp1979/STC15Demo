@@ -46,7 +46,7 @@ unsigned char DS18B20_ReadByte() {
 		DSPORT=0;//先将总线拉低1us
 		Delay1us();
 		DSPORT=1;//然后释放总线
-		Delay6us();
+		Delay5us();
 		bi=DSPORT;	 //读取数据，从最低位开始读取
 		/*将byte左移一位，然后与上右移7位后的bi，注意移动之后移掉那位补0。*/
 		byte=(byte>>1)|(bi<<7);
@@ -61,15 +61,16 @@ unsigned char DS18B20_ReadByte() {
 
 void DS18B20_ChangeTemperatureCOM() {
 	DS18B20_Init();
-	Delay1ms(1);
+	delay_ms(1);
 	DS18B20_WriteByte(0xcc); // 跳过ROM操作
 	DS18B20_WriteByte(0x44); // 进行温度变换
-	Delay1ms(600);
+	delay_ms(255);
+	delay_ms(255);
 }
 
 void DS18B20_ReadTemperatureCOM() {
 	DS18B20_Init();
-	Delay1ms(1);
+	delay_ms(1);
 	DS18B20_WriteByte(0xcc); // 跳过ROM操作
 	DS18B20_WriteByte(0xbe); // 读温度寄存器
 }
