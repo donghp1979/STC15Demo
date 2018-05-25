@@ -59,8 +59,8 @@ void main(void)
 		DisplayData[5]=DIG_CODE[0];
 		DisplayData[6]=DIG_CODE[0];
 		DisplayData[7]=DIG_CODE[0];
-		DEBUG(("Temp: %0.2f\n",(float)temp/100));
-		//Delay1ms(1000);
+		//DEBUG(("Temp: %0.2f\n",(float)temp/100));
+		Delay1ms(500);
 	}
 }
 
