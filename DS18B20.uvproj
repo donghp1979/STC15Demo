@@ -312,7 +312,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\STC15</IncludePath>
+              <IncludePath></IncludePath>
             </VariousControls>
           </C51>
           <Ax51>
@@ -375,14 +375,9 @@
               <FilePath>.\DS18B20.c</FilePath>
             </File>
             <File>
-              <FileName>stc_config.c</FileName>
+              <FileName>SysInit.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\stc_config.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\uart.c</FilePath>
+              <FilePath>.\SysInit.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,5 +1,13 @@
 #include "DS18B20.H"
 
+#include "STC15/delay.h"
+
+sbit DS18B20 = P3^7;
+sbit DSPORT = P3^7;
+
+#define CLR_EA() _nop_();EA=0;_nop_()
+#define SETB_EA() _nop_();EA=1;_nop_()
+
 char DS18B20_Init() {
 	unsigned char i;
 	if(!DS18B20) return 0;

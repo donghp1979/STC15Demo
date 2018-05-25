@@ -1,7 +1,8 @@
-//#include "temp.h"
+#include "STC15/USART.h"
+#include "STC15/delay.h"
+
+#include "SysInit.h"
 #include "DS18B20.h"
-#include "uart.h"
-#include "delay.h"
 
 /*******************************************************************************
 * 实验名			   : 动态显示数码管实验
@@ -22,6 +23,8 @@ unsigned char code DIG_CODE[17]={
 //0、1、2、3、4、5、6、7、8、9、A、b、C、d、E、F的显示码
 unsigned char DisplayData[8];
 //用来存放要显示的8位数的值
+unsigned char StrTemp[6]; // 存放转换后的温度字符串，XX.XX
+
 void DigDisplay(); //动态显示函数
 /*******************************************************************************
 * 函数名         : main
@@ -34,7 +37,7 @@ void main(void)
 	unsigned char i;
 	int temp;
 	GPIO_Init();
-	Timer0_Init();
+	Timer0_Init(2);
 	UART_Init();
 	EA = 1;
 	for(i=0;i<8;i++)
@@ -47,10 +50,10 @@ void main(void)
 			temp = DS18B20_ReadTemperature();
 			if(temp>0) {
 				temp=temp*0.0625*100+0.5;
-			} else temp=4444;
+			} else temp=0;
 		}
 		else {
-			temp = 9999;
+			temp = 1;
 		}
 
 		DisplayData[0]=DIG_CODE[temp/1000];
@@ -61,8 +64,31 @@ void main(void)
 		DisplayData[5]=DIG_CODE[0];
 		DisplayData[6]=DIG_CODE[0];
 		DisplayData[7]=DIG_CODE[0];
-		PrintString1("hello\r\n");
+		
+		StrTemp[0] = temp/1000+'0';
+		StrTemp[1] = temp%1000/100+'0';
+		StrTemp[2] = '.';
+		StrTemp[3] = temp%100/10+'0';
+		StrTemp[4] = temp%10+'0';
+		StrTemp[5] = 0;
+		
+		PrintString1("Temp:");
+		PrintString1(StrTemp);
+		PrintString1("\r\n");
 		delay_ms(255);
+		delay_ms(255);
+		delay_ms(255);
+		delay_ms(255);
+		if(COM1.RX_TimeOut) {
+			COM1.RX_TimeOut = 0;
+			for(i=0;i<COM1.RX_Cnt;i++) {
+				TX1_write2buff(i/100+'0');
+				TX1_write2buff(i%100/10+'0');
+				TX1_write2buff(i%10+'0');
+				TX1_write2buff(' ');
+			}
+			COM1.RX_Cnt=0;
+		}
 	}
 }
 
