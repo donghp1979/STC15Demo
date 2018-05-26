@@ -1,12 +1,9 @@
 #include "DS18B20.H"
+#include "SysInit.h"
 
 #include "STC15/delay.h"
 
 sbit DS18B20 = P3^7;
-sbit DSPORT = P3^7;
-
-#define CLR_EA() _nop_();EA=0;_nop_()
-#define SETB_EA() _nop_();EA=1;_nop_()
 
 char DS18B20_Init() {
 	unsigned char i;
@@ -31,14 +28,14 @@ void DS18B20_WriteByte(unsigned char dat) {
 		EA=0;
 		_nop_();
 		_nop_();
-		DSPORT=0;			//每写入一位数据之前先把总线拉低1us
+		DS18B20=0;			//每写入一位数据之前先把总线拉低1us
 		Delay1us();
-		DSPORT=dat&0x01; //然后写入一个数据，从最低位开始
+		DS18B20=dat&0x01; //然后写入一个数据，从最低位开始
 		EA=1;
 		Delay10us();
 		Delay10us();
 		Delay10us();
-		DSPORT=1;	//然后释放总线，至少1us给总线恢复时间才能接着写入第二个数值
+		DS18B20=1;	//然后释放总线，至少1us给总线恢复时间才能接着写入第二个数值
 		Delay1us();
 		dat>>=1;
 	}
@@ -51,17 +48,17 @@ unsigned char DS18B20_ReadByte() {
 	for(j=8;j>0;j--)
 	{
 		EA=0;
-		DSPORT=0;//先将总线拉低1us
+		DS18B20=0;//先将总线拉低1us
 		Delay1us();
-		DSPORT=1;//然后释放总线
+		DS18B20=1;//然后释放总线
 		Delay5us();
-		bi=DSPORT;	 //读取数据，从最低位开始读取
+		bi=DS18B20;	 //读取数据，从最低位开始读取
 		/*将byte左移一位，然后与上右移7位后的bi，注意移动之后移掉那位补0。*/
 		byte=(byte>>1)|(bi<<7);
 		EA=1;
 		i=4;
 		while(i--) Delay10us();		//读取完之后等待48us再接着读取下一个数
-		DSPORT=1;
+		DS18B20=1;
 		Delay1us();
 	}				
 	return byte;

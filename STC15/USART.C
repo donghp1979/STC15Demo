@@ -226,5 +226,45 @@ void UART2_int (void) interrupt UART2_VECTOR
 
 }
 
+static unsigned char RX1_Read_Pos=0;
+static unsigned char RX2_Read_Pos=0;
 
+char RX1_Read_Byte() {
+	char ch;
+//	while(!COM1.RX_TimeOut);
+	EA=0;
+	ch=0;
+	if(COM1.RX_TimeOut) {
+		RX1_Read_Pos%=COM_RX1_Lenth;
+		ch = RX1_Buffer[RX1_Read_Pos++];
+		if(RX1_Read_Pos==COM1.RX_Cnt) {
+			COM1.RX_TimeOut=0;
+		}
+	}
+	EA=1;
+	return ch;
+}
 
+char RX2_Read_Byte() {
+	char ch;
+	EA=0;
+	ch=0;
+	if(COM2.RX_TimeOut) {
+		RX2_Read_Pos%=COM_RX2_Lenth;
+		ch = RX2_Buffer[RX2_Read_Pos++];
+		if(RX2_Read_Pos==COM2.RX_Cnt) {
+			COM2.RX_TimeOut=0;
+		}
+	}
+	EA=1;
+	return ch;
+}
+
+char putchar(char ch) {
+	TX1_write2buff(ch);
+	return ch;
+}
+
+char _getkey() {
+	return RX1_Read_Byte();
+}

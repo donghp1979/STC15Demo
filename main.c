@@ -3,6 +3,7 @@
 
 #include "SysInit.h"
 #include "DS18B20.h"
+#include <stdio.h>
 
 /*******************************************************************************
 * 实验名			   : 动态显示数码管实验
@@ -21,9 +22,9 @@ unsigned char code DIG_CODE[17]={
 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,
 0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
 //0、1、2、3、4、5、6、7、8、9、A、b、C、d、E、F的显示码
-unsigned char DisplayData[8];
+unsigned char xdata DisplayData[8];
 //用来存放要显示的8位数的值
-unsigned char StrTemp[6]; // 存放转换后的温度字符串，XX.XX
+unsigned char xdata StrTemp[6]; // 存放转换后的温度字符串，XX.XX
 
 void DigDisplay(); //动态显示函数
 /*******************************************************************************
@@ -34,7 +35,7 @@ void DigDisplay(); //动态显示函数
 *******************************************************************************/
 void main(void)
 {
-	unsigned char i;
+	unsigned char i,ch;
 	int temp;
 	GPIO_Init();
 	Timer0_Init(2);
@@ -65,29 +66,31 @@ void main(void)
 		DisplayData[6]=DIG_CODE[0];
 		DisplayData[7]=DIG_CODE[0];
 		
-		StrTemp[0] = temp/1000+'0';
-		StrTemp[1] = temp%1000/100+'0';
-		StrTemp[2] = '.';
-		StrTemp[3] = temp%100/10+'0';
-		StrTemp[4] = temp%10+'0';
-		StrTemp[5] = 0;
+//		StrTemp[0] = temp/1000+'0';
+//		StrTemp[1] = temp%1000/100+'0';
+//		StrTemp[2] = '.';
+//		StrTemp[3] = temp%100/10+'0';
+//		StrTemp[4] = temp%10+'0';
+//		StrTemp[5] = 0;
+//		
+//		PrintString1("Temp:");
+//		PrintString1(StrTemp);
+//		PrintString1("\r\n");
 		
-		PrintString1("Temp:");
-		PrintString1(StrTemp);
-		PrintString1("\r\n");
+		printf("Temp : %f\n", (float)temp/100);
+		
 		delay_ms(255);
 		delay_ms(255);
 		delay_ms(255);
 		delay_ms(255);
-		if(COM1.RX_TimeOut) {
-			COM1.RX_TimeOut = 0;
-			for(i=0;i<COM1.RX_Cnt;i++) {
-				TX1_write2buff(i/100+'0');
-				TX1_write2buff(i%100/10+'0');
-				TX1_write2buff(i%10+'0');
-				TX1_write2buff(' ');
-			}
-			COM1.RX_Cnt=0;
+		ch=getchar();
+		switch(ch) {
+			case '1':
+				P0 = 0xFF;
+				break;
+			case '0':
+				P0 = 0x00;
+				break;
 		}
 	}
 }
