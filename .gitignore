@@ -50,7 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-DS18B20.uvgui.*
+*.uvgui.*
 /Objects
 /Listings
 /STC15系列库函数与例程测试版V2.0/例程/06-串口1中断收发/C语言/*.Fishman
