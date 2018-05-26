@@ -16,6 +16,8 @@ extern void DigDisplay();
 void timer0_int (void) interrupt TIMER0_VECTOR
 {
 	DigDisplay();
+	P01=1;
+	P02=1;
 }
 
 /********************* Timer1ÖÐ¶Ïº¯Êý************************/

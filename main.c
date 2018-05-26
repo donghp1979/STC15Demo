@@ -35,7 +35,7 @@ void DigDisplay(); //¶¯Ì¬ÏÔÊ¾º¯Êý
 *******************************************************************************/
 void main(void)
 {
-	unsigned char i,ch;
+	unsigned char i;
 	int temp;
 	GPIO_Init();
 	Timer0_Init(2);
@@ -77,21 +77,9 @@ void main(void)
 //		PrintString1(StrTemp);
 //		PrintString1("\r\n");
 		
-		printf("Temp : %f\n", (float)temp/100);
-		
-		delay_ms(255);
-		delay_ms(255);
-		delay_ms(255);
-		delay_ms(255);
-		ch=getchar();
-		switch(ch) {
-			case '1':
-				P0 = 0xFF;
-				break;
-			case '0':
-				P0 = 0x00;
-				break;
-		}
+		printf("Temp : %2.2f\n", (float)temp/100);
+		delay_ms(250);
+		delay_ms(250);
 	}
 }
 

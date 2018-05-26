@@ -26,7 +26,7 @@ void Timer0_Init(unsigned int ms) {
 	TIM_Def.TIM_Interrupt = ENABLE;
 	TIM_Def.TIM_ClkSource = TIM_CLOCK_1T;
 	TIM_Def.TIM_ClkOut = DISABLE;
-	TIM_Def.TIM_Value = 65536-(MAIN_Fosc/(1000/ms));; // 2∫¡√Î@11.0592MHz 1T
+	TIM_Def.TIM_Value = 65536-(MAIN_Fosc/(1000/ms));
 	TIM_Def.TIM_Run = ENABLE;
 	
 	Timer_Inilize(Timer0, &TIM_Def);
