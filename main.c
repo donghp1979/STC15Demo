@@ -18,6 +18,7 @@ sbit LSA=P3^2;
 sbit LSB=P3^3;
 sbit LSC=P3^4;
 
+
 unsigned char code DIG_CODE[17]={
 0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,
 0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
@@ -77,7 +78,7 @@ void main(void)
 //		PrintString1(StrTemp);
 //		PrintString1("\r\n");
 		
-		printf("Temp : %2.2f\n", (float)temp/100);
+		//printf("Temp : %2.2f\n", (float)temp/100);
 		delay_ms(250);
 		delay_ms(250);
 	}

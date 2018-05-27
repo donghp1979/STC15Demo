@@ -177,17 +177,32 @@ void PrintString(COMx_Define *COMx, u8 *puts)
 
 
 /********************* UART1中断函数************************/
+static unsigned char xdata DOWNLOAD_CMD[5]={0xBC,0xCF,0xAD,0xFE,0x00}; 
 void UART1_int (void) interrupt UART1_VECTOR
 {
+	unsigned char i;
 	if(RI)
 	{
 		RI = 0;
-		RX1_LED = ~RX1_LED;
 		if(COM1.B_RX_OK == 0)
 		{
+//			if(SBUF==0xFE) {
+//				IAP_CONTR = 0x60;
+//			}
 			if(COM1.RX_Cnt >= COM_RX1_Lenth)	COM1.RX_Cnt = 0;
 			RX1_Buffer[COM1.RX_Cnt++] = SBUF;
 			COM1.RX_TimeOut = TimeOutSet1;
+
+			// 自动下载命令
+//			i=COM1.RX_Cnt;
+//			if(RX1_Buffer[--i%128]==DOWNLOAD_CMD[4] 
+//				&& RX1_Buffer[--i%128]==DOWNLOAD_CMD[3] 
+//				&& RX1_Buffer[--i%128]==DOWNLOAD_CMD[2] 
+//				&& RX1_Buffer[--i%128]==DOWNLOAD_CMD[1]
+//				&& RX1_Buffer[--i%128]==DOWNLOAD_CMD[0])
+//			{
+//				IAP_CONTR = 0x60;
+//			}
 		}
 	}
 
